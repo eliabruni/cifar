@@ -25,7 +25,7 @@ for i=1:size(trx,1)
     im = imrotate(reshape(trx(i,:), 32, 32, 3), -90);   
     train{i} = encodeCifarImage(encoder,im);
 end
-train = cat(1, train{:});
+train = cat(2, train{:});
 train=rot90(train);
 % save features
 save(opts.TRAIN_PATH,'train');
@@ -52,7 +52,7 @@ for i=1:size(trx,1)
     im = imrotate(reshape(trx(i,:), 32, 32, 3), -90);   
     test{i} = encodeCifarImage(encoder,im);
 end
-test = cat(1, test{:});
+test = cat(2, test{:});
 test=rot90(test);
 % save features
 save(opts.TEST_PATH,'test');
