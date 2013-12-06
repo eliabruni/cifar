@@ -11,10 +11,7 @@ opts.TEST_PATH='/Users/eliabruni/work/2014/cifar/data/testBovwFeatures.mat';
 % load CIFAR training data
 f1=load([opts.CIFAR_PATH '/train.mat']);
 trx = [f1.data];
-Ytrain = [f1.fine_labels] + 1;
 clear f1;
-
-Xtrain= zeros(32, 32, 3, 50000, 'uint8');
 
 % load encoder
 encoder = load(opts.ENCODER_PATH);
