@@ -41,7 +41,7 @@ clear f1;
 if exist(data.encoderPath) & opts.reuseSavedData
     encoder = load(data.encoderPath);
 else
-    encoder = trainEncoder(trx, ...
+    encoder = cifarTrainEncoder(trx, ...
         opts.encoderParams{:});
     save(data.encoderPath, '-struct', 'encoder');
     fprintf('Traning encoder done!\n\n');
