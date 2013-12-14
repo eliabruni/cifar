@@ -14,7 +14,6 @@ opts.geometricExtension = 'none';
 opts.subdivisions = zeros(4,0);
 opts.readImageFn = @readImage;
 opts.extractorFn = @getDenseSIFT;
-opts.maxNumTrainImages = 10000;
 opts.lite = false;
 opts = vl_argparse(opts, varargin);
 
