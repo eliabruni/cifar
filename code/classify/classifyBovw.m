@@ -8,14 +8,16 @@ assert(~strcmp(CIFAR_DIR, '/path/to/cifar/cifar-10-batches-mat/'), ...
 
 % if true it reuses previously computed and saved data
 opts.reuseSavedData = true;
-data.prefix = 'bovw';
-data.dir = 'data';
+%data.prefix = 'bovw';
+%data.dir = 'data';
+
+addpath('/Users/eliabruni/git/cifar/code');
 
 for pass = 1:2
-    data.resultDir = fullfile(data.dir, data.prefix);
-    data.encoderPath = fullfile(data.resultDir, 'encoder.mat');
-    data.trainFeaturesPath =  fullfile(data.resultDir, 'trainBovwFeatures.mat');
-    data.trainFeaturesPath =  fullfile(data.resultDir, 'testBovwFeatures.mat');
+    %data.resultDir = fullfile(data.dir, data.prefix);
+    data.encoderPath = '/Users/eliabruni/work/2014/cifar/data/bovw/encoder.mat';
+    %data.trainFeaturesPath =  fullfile(data.resultDir, 'trainBovwFeatures.mat');
+    %data.trainFeaturesPath =  fullfile(data.resultDir, 'testBovwFeatures.mat');
 end
 
 %% Configuration
@@ -78,30 +80,30 @@ train=rot90(train);
 
 % train classifier using SVM
 C = 100;
-theta = train_svm(trainXCs, trainY, C);
+theta = train_svm(train, trainY, C);
 
-[val,labels] = max(trainXCs*theta, [], 2);
+[val,labels] = max(train*theta, [], 2);
 fprintf('Train accuracy %f%%\n', 100 * (1 - sum(labels ~= trainY) / length(trainY)));
 
 %%%%% TESTING %%%%%
 
-%% Load CIFAR test data
-fprintf('Loading test data...\n');
-f1=load([CIFAR_DIR '/test.mat']);
-testX = double(f1.data);
-testY = double(f1.fine_labels) + 1;
-clear f1;
-
-% compute testing features and standardize
-if (whitening)
-    testXC = extract_features(testX, centroids, rfSize, CIFAR_DIM, M,P);
-else
-    testXC = extract_features(testX, centroids, rfSize, CIFAR_DIM);
-end
-testXCs = bsxfun(@rdivide, bsxfun(@minus, testXC, trainXC_mean), trainXC_sd);
-testXCs = [testXCs, ones(size(testXCs,1),1)];
-
-% test and print result
-[val,labels] = max(testXCs*theta, [], 2);
-fprintf('Test accuracy %f%%\n', 100 * (1 - sum(labels ~= testY) / length(testY)));
+% %% Load CIFAR test data
+% fprintf('Loading test data...\n');
+% f1=load([CIFAR_DIR '/test.mat']);
+% testX = double(f1.data);
+% testY = double(f1.fine_labels) + 1;
+% clear f1;
+% 
+% % compute testing features and standardize
+% if (whitening)
+%     testXC = extract_features(testX, centroids, rfSize, CIFAR_DIM, M,P);
+% else
+%     testXC = extract_features(testX, centroids, rfSize, CIFAR_DIM);
+% end
+% testXCs = bsxfun(@rdivide, bsxfun(@minus, testXC, trainXC_mean), trainXC_sd);
+% testXCs = [testXCs, ones(size(testXCs,1),1)];
+% 
+% % test and print result
+% [val,labels] = max(testXCs*theta, [], 2);
+% fprintf('Test accuracy %f%%\n', 100 * (1 - sum(labels ~= testY) / length(testY)));
 
